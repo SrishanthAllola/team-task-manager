@@ -20,7 +20,7 @@ function Dashboard() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/dashboard"
+        "https://team-task-manager-production-57d9.up.railway.app/api/dashboard"
       );
 
       setStats(res.data);

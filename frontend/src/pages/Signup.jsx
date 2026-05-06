@@ -14,7 +14,7 @@ function Signup() {
     try {
 
       await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://team-task-manager-production-57d9.up.railway.app/api/auth/signup",
         {
           name,
           email,

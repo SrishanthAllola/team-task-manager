@@ -20,7 +20,7 @@ function Projects() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/projects"
+        "https://team-task-manager-production-57d9.up.railway.app/api/projects"
       );
 
       setProjects(res.data);
@@ -40,7 +40,7 @@ function Projects() {
     try {
 
       await axios.post(
-        "http://localhost:5000/api/projects",
+        "https://team-task-manager-production-57d9.up.railway.app/api/projects",
         {
           name,
           description,
@@ -73,7 +73,7 @@ function Projects() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/api/projects/${id}`
+        `https://team-task-manager-production-57d9.up.railway.app/api/projects/${id}`
       );
 
       fetchProjects();
