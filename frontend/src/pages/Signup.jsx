@@ -29,7 +29,10 @@ function Signup() {
 
     } catch (error) {
 
-      alert("Signup Failed");
+      alert(
+        error.response?.data?.message ||
+        "Signup Failed"
+      );
 
     }
 
@@ -47,6 +50,8 @@ function Signup() {
           Signup
         </h1>
 
+
+
         <input
           type="text"
           placeholder="Enter Name"
@@ -55,6 +60,8 @@ function Signup() {
           className="w-full border p-3 rounded-lg mb-4"
         />
 
+
+
         <input
           type="email"
           placeholder="Enter Email"
@@ -62,6 +69,8 @@ function Signup() {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full border p-3 rounded-lg mb-4"
         />
+
+
 
         <input
           type="password"
@@ -75,7 +84,7 @@ function Signup() {
 
         <button
           onClick={signupUser}
-          className="w-full bg-green-600 text-white p-3 rounded-lg text-lg"
+          className="w-full bg-blue-600 text-white p-3 rounded-lg text-lg"
         >
           Signup
         </button>
