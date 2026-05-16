@@ -8,16 +8,17 @@ const taskSchema = new mongoose.Schema({
   },
 
   description: {
-    type: String
+    type: String,
+    required: true
   },
 
   assignedTo: {
-    type: String
+    type: String,
+    required: true
   },
 
   status: {
     type: String,
-    enum: ["Pending", "In Progress", "Completed"],
     default: "Pending"
   },
 
@@ -25,7 +26,11 @@ const taskSchema = new mongoose.Schema({
     type: Date
   }
 
-}, { timestamps: true });
+}, {
+
+  timestamps: true
+
+});
 
 module.exports = mongoose.model(
   "Task",
