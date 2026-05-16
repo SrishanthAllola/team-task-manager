@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 
 function Tasks() {
-
-  const role = localStorage.getItem("role");
-  const loggedInUser = localStorage.getItem("name");
 
   const [tasks, setTasks] = useState([]);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
+  const [dueDate, setDueDate] = useState("");
+
+  const role = localStorage.getItem("role");
 
 
 
@@ -35,6 +34,15 @@ function Tasks() {
 
 
 
+  useEffect(() => {
+
+    fetchTasks();
+
+  }, []);
+
+
+
+
   const createTask = async () => {
 
     try {
@@ -45,6 +53,7 @@ function Tasks() {
           title,
           description,
           assignedTo,
+          dueDate,
           status: "Pending"
         }
       );
@@ -54,6 +63,7 @@ function Tasks() {
       setTitle("");
       setDescription("");
       setAssignedTo("");
+      setDueDate("");
 
       fetchTasks();
 
@@ -64,6 +74,7 @@ function Tasks() {
     }
 
   };
+
 
 
 
@@ -90,6 +101,7 @@ function Tasks() {
 
 
 
+
   const deleteTask = async (id) => {
 
     try {
@@ -110,162 +122,153 @@ function Tasks() {
 
 
 
-  useEffect(() => {
-
-    fetchTasks();
-
-  }, []);
-
-
-
-
   return (
 
-    <>
+    <div className="min-h-screen bg-gray-100 p-10">
 
-      <Navbar />
-
-      <div className="min-h-screen bg-gray-100 p-10">
-
-        <div className="max-w-5xl mx-auto">
-
-          <h1 className="text-4xl font-bold mb-8 text-center">
-            Team Task Manager
-          </h1>
+      <h1 className="text-4xl font-bold mb-8">
+        Task Management
+      </h1>
 
 
 
-          {role === "admin" && (
+      {role === "admin" && (
 
-            <div className="bg-white p-6 rounded-xl shadow-md mb-10">
+        <div className="bg-white p-6 rounded-2xl shadow-lg mb-10">
 
-              <h2 className="text-2xl font-semibold mb-4">
-                Create Task
-              </h2>
-
-              <input
-                className="w-full border p-3 rounded-lg mb-4"
-                placeholder="Task Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-
-              <input
-                className="w-full border p-3 rounded-lg mb-4"
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-
-              <input
-                className="w-full border p-3 rounded-lg mb-4"
-                placeholder="Assign To Member"
-                value={assignedTo}
-                onChange={(e) => setAssignedTo(e.target.value)}
-              />
-
-              <button
-                onClick={createTask}
-                className="bg-blue-600 text-white px-5 py-3 rounded-lg"
-              >
-                Create Task
-              </button>
-
-            </div>
-
-          )}
+          <h2 className="text-2xl font-semibold mb-5">
+            Create Task
+          </h2>
 
 
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            {tasks
-              .filter((task) => {
-
-                if (role === "admin") {
-                  return true;
-                }
-
-                return task.assignedTo === loggedInUser;
-
-              })
-              .map((task) => (
-
-                <div
-                  key={task._id}
-                  className="bg-white p-5 rounded-xl shadow-md"
-                >
-
-                  <h2 className="text-2xl font-bold">
-                    {task.title}
-                  </h2>
-
-                  <p className="mt-2 text-gray-600">
-                    {task.description}
-                  </p>
-
-                  <p className="mt-2">
-                    <span className="font-semibold">
-                      Assigned To:
-                    </span>{" "}
-                    {task.assignedTo}
-                  </p>
-
-                  <p className="mt-2">
-                    <span className="font-semibold">
-                      Status:
-                    </span>{" "}
-                    {task.status}
-                  </p>
+          <input
+            type="text"
+            placeholder="Task Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full border p-3 rounded-lg mb-4"
+          />
 
 
 
-                  {role === "member" && (
-
-                    <button
-                      onClick={() => completeTask(task._id)}
-                      className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg"
-                    >
-                      Mark Completed
-                    </button>
-
-                  )}
+          <textarea
+            placeholder="Task Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full border p-3 rounded-lg mb-4"
+          />
 
 
 
-                  {role === "admin" && (
+          <input
+            type="text"
+            placeholder="Assign To"
+            value={assignedTo}
+            onChange={(e) => setAssignedTo(e.target.value)}
+            className="w-full border p-3 rounded-lg mb-4"
+          />
 
-                    <div className="mt-5 flex gap-3">
 
-                      <button
-                        onClick={() => completeTask(task._id)}
-                        className="bg-green-600 text-white px-4 py-2 rounded-lg"
-                      >
-                        Complete
-                      </button>
 
-                      <button
-                        onClick={() => deleteTask(task._id)}
-                        className="bg-red-600 text-white px-4 py-2 rounded-lg"
-                      >
-                        Delete
-                      </button>
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            className="w-full border p-3 rounded-lg mb-4"
+          />
 
-                    </div>
 
-                  )}
 
-                </div>
-
-              ))}
-
-          </div>
+          <button
+            onClick={createTask}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+          >
+            Create Task
+          </button>
 
         </div>
 
+      )}
+
+
+
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        {tasks.map((task) => (
+
+          <div
+            key={task._id}
+            className="bg-white p-6 rounded-2xl shadow-lg"
+          >
+
+            <h2 className="text-2xl font-semibold mb-3">
+              {task.title}
+            </h2>
+
+
+
+            <p className="text-gray-600 mb-3">
+              {task.description}
+            </p>
+
+
+
+            <p className="mb-2">
+              <strong>Assigned To:</strong>{" "}
+              {task.assignedTo}
+            </p>
+
+
+
+            <p className="mb-2">
+              <strong>Status:</strong>{" "}
+              {task.status}
+            </p>
+
+
+
+            <p className="mb-4">
+              <strong>Due Date:</strong>{" "}
+              {task.dueDate
+                ? new Date(task.dueDate).toLocaleDateString()
+                : "No Due Date"}
+            </p>
+
+
+
+            {task.status !== "Completed" && (
+
+              <button
+                onClick={() => completeTask(task._id)}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg mr-3"
+              >
+                Mark Completed
+              </button>
+
+            )}
+
+
+
+            {role === "admin" && (
+
+              <button
+                onClick={() => deleteTask(task._id)}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg"
+              >
+                Delete
+              </button>
+
+            )}
+
+          </div>
+
+        ))}
+
       </div>
 
-    </>
+    </div>
 
   );
 
